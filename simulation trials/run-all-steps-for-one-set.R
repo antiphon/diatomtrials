@@ -1,11 +1,11 @@
 # run all steps!
 
 # Windows:
-cores <- 1
+cores <- 1 # if on unix, set to your liking
 
 # stimulate
 ww <- setwd("1-simulate/")
-for(i in 1:1) source("run.R")
+for(i in 1:5) source("run.R")
 setwd(ww)
 
 # estibate
