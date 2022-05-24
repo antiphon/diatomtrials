@@ -1,0 +1,33 @@
+Version "donkey hump" 13.4.2021
+----
+
+Relative rate estimation, method ranking using known simulated true rates
+
+True model is Baranyi.
+
+True curves: 
+
+* Random positive starting value unif[0.01, 5]
+* Random asymptote A unif[50, 100]
+* Random rate, unif[.5,3]
+* Random lag, unif[0,5]
+ 
+
+The challenges, nested:
+
+1. Noise: Additive gaussian noise at log scale, varying sigma, 3 values low medium large
+    2. Frequency: 0.5, 1, 2 times a day
+        3. Early stop: no (upto 14), mid (8) censoring
+            4. Crashes: no crash, mid (8) crash
+
+so for(sigma) 
+    for(times_a_day)
+        for(upto)
+            for(crash_after)
+            
+just run this in blocks of say 5000 curves, so we can compute in bits and the results will not increase in number but in accuracy.
+
+
+run01: fix A = 100 rate = 1 (this was chosen for the publication)
+run02: fix A = 100
+run03: all free

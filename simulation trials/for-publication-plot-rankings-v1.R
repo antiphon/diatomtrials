@@ -1,12 +1,11 @@
-# Summarise all results.
-# Include all relevant code in this file.
+# Summarise all results
 
-#ww <- setwd("3-summarise/")# just to get path references right
-#source("0-setup.R")
+library(maxgrowthcomparison)
 
-set <- "run01"
-plotpath <- paste0("plots/paper-")
+ww <- setwd("3-summarise/")# just to get path references right
 
+source("0-setup.R")
+plotpath <- paste0(plotpath, "paper-")
 
 library(ggplot2)
 library(patchwork)
@@ -20,8 +19,7 @@ pdftitle <- paste0(set)
 
 ### load results
 if(!exists("df1")){
-#df0 <- loader( sprintf("%s_gathered.rds", set) )
-df0 <- readRDS( sprintf("storage/%s_gathered.rds", set) )
+df0 <- loader( sprintf("%s_gathered.rds", set) )
 df0 <- df0 %>% mutate(problem_set = gsub("tad", "t.a.d.", problem_set) )
 #
 
@@ -47,6 +45,7 @@ df1 <- df0 %>% filter( !grepl("upto=07, crash_after=07", problem_set) &
 ############
 addstuff <- function(d) 
   d %>%
+  #mutate(reshape2::colsplit(problem_set, ", ", c("sigma", "t.a.d.", "upto", "crash"))) %>%
   tidyr::separate(problem_set, sep = ", ", c("sigma", "t.a.d.", "upto", "crash"), remove=FALSE) %>%
   # figure out nobs
   mutate(nobs =  1 + floor(as.numeric(gsub("[a-z=]*", "", t.a.d.)) * as.numeric(gsub("[a-z=]*", "", upto) ) ),
@@ -68,7 +67,7 @@ df2 <- df1 %>%
 
 
 }
-#setwd(ww)
+setwd(ww)
 
 # how many sims per set?
 print(table(table(df1$problem_set)) )
@@ -429,4 +428,4 @@ aranks1 <- ranks1 %>%
 atab1 <- aranks1 %>% pivot_wider(values_from = "ave_rank", names_from = "metric")   #%>% filter( metric == "MSE")
 atab1 <- atab1[as.integer(factor(atab1$estimator, levels = them_methods)) %>% order(),]
 
-print(xtable::xtable(atab1), include.rownames = FALSE)
+#print(xtable::xtable(atab1), include.rownames = FALSE)
